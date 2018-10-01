@@ -12,8 +12,18 @@ namespace WebAPI.Controllers
     public class HomeController : ApiController
     {
         // GET api/home
-        public async Task<IList<Student>> GetAsync()
+        public IHttpActionResult GetAsync()
         {
+            throw new SystemException("This method is not implemented to test Global Exception Filter");
+        }
+
+        // GET api/home/5
+        public async Task<IHttpActionResult> GetAsync(string id)
+        {
+            int parsedValue;
+            if (!int.TryParse(id, out parsedValue))
+                throw new ArgumentException("invalid input", "id");
+
             Student student = new Student
             {
                 Id = 1,
@@ -21,32 +31,26 @@ namespace WebAPI.Controllers
                 TotalMarks = 120,
                 Address = "TestAddress1"
             };
-            var response = new List<Student> { student };
-            return await Task.FromResult(response);
-        }
-
-        // GET api/home/5
-        public async Task<Student> GetAsync(int id)
-        {
-            throw new NotImplementedException("This method is not implemented to test Global Exception Filter");
+            var value = await Task.FromResult(student);
+            return Ok(value);
         }
 
         // POST api/home
-        public async void PostAsync([FromBody]Student student)
+        public void PostAsync([FromBody]Student student)
         {
-            throw new NotImplementedException("This method is not implemented to test Global Exception Filter");
+            throw new SystemException("This method is not implemented to test Global Exception Filter");
         }
 
         // PUT api/home/5
-        public async void PutAsync(int id, [FromBody]Student student)
+        public void PutAsync(int id, [FromBody]Student student)
         {
-            throw new NotImplementedException("This method is not implemented to test Global Exception Filter");
+            throw new SystemException("This method is not implemented to test Global Exception Filter");
         }
 
         // DELETE api/home/5
-        public async void DeleteAsync(int id)
+        public void DeleteAsync(int id)
         {
-            throw new NotImplementedException("This method is not implemented to test Global Exception Filter");
+            throw new ArgumentException("invalid input", "id");
         }
     }
 }

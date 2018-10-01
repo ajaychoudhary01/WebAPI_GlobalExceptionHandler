@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using WebAPI.ExceptionFilter;
 using WebAPI.ExceptionLogger;
+using WebAPI.GlobalExceptionFilter;
 
 namespace WebAPI
 {
@@ -22,8 +24,9 @@ namespace WebAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionFilter.GlobalExceptionHandler());
-            config.Services.Replace(typeof(IExceptionLogger), new GlobalExceptionFilter.GlobalExceptionLogger(new Logger(), true));
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
+            config.Services.Add(typeof(IExceptionLogger), new GlobalExceptionLogger(new Logger(), true));
+            //config.Filters.Add(new ExceptionHandleFilter());
         }
     }
 }
